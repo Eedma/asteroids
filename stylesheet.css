@@ -12,7 +12,7 @@ body {
     transform: translate(-50%, -50%);
 }
 
-#my-canvas {
+#canvas {
     background-color: #000;
     border: 1px solid #000;
     height: 100%;
