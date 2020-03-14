@@ -2,21 +2,37 @@ let canvas;
 let ctx;
 let canvasWidth = 1400;
 let canvasHeight = 1000;
-let keys = [];
-let ship;
-let bullets = [];
-let asteroids = [];
-let score = 0;
-let lives = 3;
 let id;
- 
+let game
+let ship;
 let highScore;
 let localStorageName = "HighScore";
+
+class Game{
+    constructor(){
+        this.keys = [];
+        this.bullets = [];
+        this.asteroids = [];
+        this.score = 0;
+        this.lives = 3;
+    }
+}
  
 document.addEventListener('DOMContentLoaded', SetupCanvas);
 
+
+    document.addEventListener("keydown", function(e){
+        console.log('cippa')
+        if(game.lives <= 0){
+            if(e.keyCode === 32){
+                SetupCanvas()
+            }
+        }
+        
+    })
  
 function SetupCanvas(){
+    game = new Game()
     canvas = document.getElementById("canvas");
     ctx = canvas.getContext("2d");
     canvas.width = canvasWidth;
@@ -26,7 +42,7 @@ function SetupCanvas(){
     ship = new Ship();
  
     for(let i = 0; i < 8; i++){
-        asteroids.push(new Asteroid());
+        game.asteroids.push(new Asteroid());
     }
  
     // Store all possible keycodes in an array so that
@@ -60,12 +76,12 @@ function SetupCanvas(){
 // Move event handling functions so that we can turn off
 // event handling if game over is reached
 function HandleKeyDown(e){
-    keys[e.keyCode] = true;
+    game.keys[e.keyCode] = true;
 }
 function HandleKeyUp(e){
-    keys[e.keyCode] = false;
+    game.keys[e.keyCode] = false;
     if (e.keyCode === 32){
-        bullets.push(new Bullet(ship.angle));
+        game.bullets.push(new Bullet(ship.angle));
     }
 }
  
@@ -231,7 +247,7 @@ function DrawLifeShips(){
     let points = [[9, 9], [-9, 9]];
     ctx.strokeStyle = 'white'; // Stroke color of ships
     // Cycle through all live ships remaining
-    for(let i = 0; i < lives; i++){
+    for(let i = 0; i < game.lives; i++){
         // Start drawing ship
         ctx.beginPath();
         // Move to origin point
@@ -252,13 +268,13 @@ function DrawLifeShips(){
  
 function Render() {
     // Check if the ship is moving forward
-    ship.movingForward = (keys[87]);
+    ship.movingForward = (game.keys[87]);
  
-    if (keys[68]) {
+    if (game.keys[68]) {
         // d key rotate right
         ship.Rotate(1);
     }
-    if (keys[65]) {
+    if (game.keys[65]) {
         // a key rotate left
        ship.Rotate(-1);
     }
@@ -268,10 +284,10 @@ function Render() {
     // Display score
     ctx.fillStyle = 'white';
     ctx.font = '21px Arial';
-    ctx.fillText("SCORE : " + score.toString(), 20, 35);
+    ctx.fillText("SCORE : " + game.score.toString(), 20, 35);
  
     // If no lives signal game over
-    if(lives <= 0){
+    if(game.lives <= 0){
         // If Game over remove event listeners to stop getting keyboard input
         document.body.removeEventListener("keydown", HandleKeyDown);
         document.body.removeEventListener("keyup", HandleKeyUp);
@@ -280,10 +296,16 @@ function Render() {
         ctx.fillStyle = 'white';
         ctx.font = '50px Arial';
         ctx.fillText("GAME OVER", canvasWidth / 2 - 150, canvasHeight / 2);
+        ctx.fillText("press spacebar to play again", canvasWidth / 2 - 300, canvasHeight / 1.5);
+
+        if(game.lives <= 0){
+            return cancelAnimationFrame(id)
+        }
+
         
     }
  
-    if(asteroids.length === 0){
+    if(game.asteroids.length === 0){
         ship.x = canvasWidth / 2;
         ship.y = canvasHeight / 2;
         ship.velX = 0;
@@ -291,7 +313,7 @@ function Render() {
         for(let i = 0; i < 8; i++){
             let asteroid = new Asteroid();
             asteroid.speed += .5;
-            asteroids.push(asteroid);
+            game.asteroids.push(asteroid);
         }
     }
  
@@ -299,35 +321,35 @@ function Render() {
     DrawLifeShips();
  
     // Check for collision of ship with asteroid
-    if (asteroids.length !== 0) {
-        for(let k = 0; k < asteroids.length; k++){
-            if(CircleCollision(ship.x, ship.y, 11, asteroids[k].x, asteroids[k].y, asteroids[k].collisionRadius)){
+    if (game.asteroids.length !== 0) {
+        for(let k = 0; k < game.asteroids.length; k++){
+            if(CircleCollision(ship.x, ship.y, 11, game.asteroids[k].x, game.asteroids[k].y, game.asteroids[k].collisionRadius)){
                 ship.x = canvasWidth / 2;
                 ship.y = canvasHeight / 2;
                 ship.velX = 0;
                 ship.velY = 0;
-                lives -= 1;
+                game.lives -= 1;
             }
         }
     }
  
     // Check for collision with bullet and asteroid
-    if (asteroids.length !== 0 && bullets.length != 0){
+    if (game.asteroids.length !== 0 && game.bullets.length != 0){
 loop1:
-        for(let l = 0; l < asteroids.length; l++){
-            for(let m = 0; m < bullets.length; m++){
-                if(CircleCollision(bullets[m].x, bullets[m].y, 3, asteroids[l].x, asteroids[l].y, asteroids[l].collisionRadius)){
+        for(let l = 0; l < game.asteroids.length; l++){
+            for(let m = 0; m < game.bullets.length; m++){
+                if(CircleCollision(game.bullets[m].x, game.bullets[m].y, 3, game.asteroids[l].x, game.asteroids[l].y, game.asteroids[l].collisionRadius)){
                     // Check if asteroid can be broken into smaller pieces
-                    if(asteroids[l].level === 1){
-                        asteroids.push(new Asteroid(asteroids[l].x - 5, asteroids[l].y - 5, 25, 2, 22));
-                        asteroids.push(new Asteroid(asteroids[l].x + 5, asteroids[l].y + 5, 25, 2, 22));
-                    } else if(asteroids[l].level === 2){
-                        asteroids.push(new Asteroid(asteroids[l].x - 5, asteroids[l].y - 5, 15, 3, 12));
-                        asteroids.push(new Asteroid(asteroids[l].x + 5, asteroids[l].y + 5, 15, 3, 12));
+                    if(game.asteroids[l].level === 1){
+                        game.asteroids.push(new Asteroid(game.asteroids[l].x - 5, game.asteroids[l].y - 5, 25, 2, 22));
+                        game.asteroids.push(new Asteroid(game.asteroids[l].x + 5, game.asteroids[l].y + 5, 25, 2, 22));
+                    } else if(game.asteroids[l].level === 2){
+                        game.asteroids.push(new Asteroid(game.asteroids[l].x - 5, game.asteroids[l].y - 5, 15, 3, 12));
+                        game.asteroids.push(new Asteroid(game.asteroids[l].x + 5, game.asteroids[l].y + 5, 15, 3, 12));
                     }
-                    asteroids.splice(l,1);
-                    bullets.splice(m,1);
-                    score += 20;
+                    game.asteroids.splice(l,1);
+                    game.bullets.splice(m,1);
+                    game.score += 20;
  
                     // Used to break out of loops because splicing arrays
                     // you are looping through will break otherwise
@@ -342,23 +364,23 @@ loop1:
         ship.Draw();
     }
     
-    if (bullets.length !== 0) {
-        for(let i = 0; i < bullets.length; i++){
-            bullets[i].Update();
-            bullets[i].Draw();
+    if (game.bullets.length !== 0) {
+        for(let i = 0; i < game.bullets.length; i++){
+            game.bullets[i].Update();
+            game.bullets[i].Draw();
         }
     }
-    if (asteroids.length !== 0) {
-        for(let j = 0; j < asteroids.length; j++){
-            asteroids[j].Update();
+    if (game.asteroids.length !== 0) {
+        for(let j = 0; j < game.asteroids.length; j++){
+            game.asteroids[j].Update();
             // Pass j so we can track which asteroid points
             // to store
-            asteroids[j].Draw(j);
+            game.asteroids[j].Draw(j);
         }
     }
  
     // Updates the high score using local storage
-    highScore = Math.max(score, highScore);
+    highScore = Math.max(game.score, highScore);
     localStorage.setItem(localStorageName, highScore);
     ctx.font = '21px Arial';
     ctx.fillText("HIGH SCORE : " + highScore.toString(), 20, 70);
