@@ -1,5 +1,6 @@
 asteroids v1.0 -  game in vanilla javascript
 
+see live @ asteroids.pieinthesky.space
 It might work!
 
 TODO: 
@@ -7,6 +8,8 @@ TODO:
     - maybe a better spaceship?!
     - store in a db the results would be great
     - absolutly a better UI
+    - maybe mobile friendly?!
+    - link to pie in the sky main project
 
 When done, try this P5.js tutorial for asteroids
 

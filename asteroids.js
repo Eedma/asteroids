@@ -1,7 +1,7 @@
 let canvas;
 let ctx;
-let canvasWidth = 1400;
-let canvasHeight = 1000;
+let canvasWidth = window.innerWidth;
+let canvasHeight = window.innerHeight;
 let id;
 let game
 let ship;
@@ -17,74 +17,7 @@ class Game{
         this.lives = 3;
     }
 }
- 
-document.addEventListener('DOMContentLoaded', SetupCanvas);
 
-
-    document.addEventListener("keydown", function(e){
-        console.log('cippa')
-        if(game.lives <= 0){
-            if(e.keyCode === 32){
-                SetupCanvas()
-            }
-        }
-        
-    })
- 
-function SetupCanvas(){
-    game = new Game()
-    canvas = document.getElementById("canvas");
-    ctx = canvas.getContext("2d");
-    canvas.width = canvasWidth;
-    canvas.height = canvasHeight;
-    ctx.fillStyle = "black";
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
-    ship = new Ship();
- 
-    for(let i = 0; i < 8; i++){
-        game.asteroids.push(new Asteroid());
-    }
- 
-    // Store all possible keycodes in an array so that
-    // multiple keys can work at the same time
-    // document.body.addEventListener("keydown", function(e) {
-    //     keys[e.keyCode] = true;
-    // });
-    // document.body.addEventListener("keyup", function(e) {
-    //     keys[e.keyCode] = false;
-    //     if (e.keyCode === 32){
-    //         bullets.push(new Bullet(ship.angle));
-    //     }
-    // });
-    document.body.addEventListener("keydown", HandleKeyDown);
-    document.body.addEventListener("keyup", HandleKeyUp);
- 
-    // Retrieves locally stored high scores
-    if (localStorage.getItem(localStorageName) == null) {
-        highScore = 0;
-    } else {
-        highScore = localStorage.getItem(localStorageName);
-    }
- 
-    Render();
-}
-
-// restart
-
-
- 
-// Move event handling functions so that we can turn off
-// event handling if game over is reached
-function HandleKeyDown(e){
-    game.keys[e.keyCode] = true;
-}
-function HandleKeyUp(e){
-    game.keys[e.keyCode] = false;
-    if (e.keyCode === 32){
-        game.bullets.push(new Bullet(ship.angle));
-    }
-}
- 
 class Ship {
     constructor() {
         this.visible = true;
@@ -223,6 +156,71 @@ class Asteroid{
         ctx.stroke();
     }
 }
+ 
+document.addEventListener('DOMContentLoaded', SetupCanvas);
+
+
+    document.addEventListener("keydown", function(e){
+        console.log('cippa')
+        if(game.lives <= 0){
+            if(e.keyCode === 32){
+                SetupCanvas()
+            }
+        }
+        
+    })
+ 
+function SetupCanvas(){
+    game = new Game()
+    canvas = document.getElementById("canvas");
+    ctx = canvas.getContext("2d");
+    canvas.width = canvasWidth;
+    canvas.height = canvasHeight;
+    ctx.fillStyle = "black";
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    ship = new Ship();
+ 
+    for(let i = 0; i < 8; i++){
+        game.asteroids.push(new Asteroid());
+    }
+ 
+    // Store all possible keycodes in an array so that
+    // multiple keys can work at the same time
+    // document.body.addEventListener("keydown", function(e) {
+    //     keys[e.keyCode] = true;
+    // });
+    // document.body.addEventListener("keyup", function(e) {
+    //     keys[e.keyCode] = false;
+    //     if (e.keyCode === 32){
+    //         bullets.push(new Bullet(ship.angle));
+    //     }
+    // });
+    document.body.addEventListener("keydown", HandleKeyDown);
+    document.body.addEventListener("keyup", HandleKeyUp);
+ 
+    // Retrieves locally stored high scores
+    if (localStorage.getItem(localStorageName) == null) {
+        highScore = 0;
+    } else {
+        highScore = localStorage.getItem(localStorageName);
+    }
+ 
+    Render();
+}
+
+
+// Move event handling functions so that we can turn off
+// event handling if game over is reached
+function HandleKeyDown(e){
+    game.keys[e.keyCode] = true;
+}
+function HandleKeyUp(e){
+    game.keys[e.keyCode] = false;
+    if (e.keyCode === 32){
+        game.bullets.push(new Bullet(ship.angle));
+    }
+}
+
  
 function CircleCollision(p1x, p1y, r1, p2x, p2y, r2){
     let radiusSum;
