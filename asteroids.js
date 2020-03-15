@@ -15,6 +15,7 @@ class Game {
         this.asteroids = [];
         this.score = 0;
         this.lives = 3;
+        this.exp = 1;
     }
 }
 
@@ -116,11 +117,11 @@ class Bullet {
 }
 
 class Asteroid {
-    constructor(x, y, radius, level, collisionRadius) {
+    constructor(x, y, radius, level, collisionRadius, speed) {
         this.visible = true;
         this.x = x || Math.floor(Math.random() * canvasWidth);
         this.y = y || Math.floor(Math.random() * canvasHeight);
-        this.speed = 1;
+        this.speed = 1 || speed;
         this.radius = radius || 50;
         this.angle = Math.floor(Math.random() * 359);
         this.strokeColor = 'white';
@@ -161,7 +162,6 @@ document.addEventListener('DOMContentLoaded', SetupCanvas);
 
 
 document.addEventListener("keydown", function (e) {
-    console.log('cippa')
     if (game.lives <= 0) {
         if (e.keyCode === 32) {
             SetupCanvas()
@@ -180,7 +180,7 @@ function SetupCanvas() {
     ctx.fillRect(0, 0, canvas.width, canvas.height);
     ship = new Ship();
 
-    for (let i = 0; i < 8; i++) {
+    for (let i = 0; i < game.exp + 8; i++) {
         game.asteroids.push(new Asteroid());
     }
 
@@ -298,13 +298,17 @@ function Render() {
     }
 
     if (game.asteroids.length === 0) {
+        /* 
         ship.x = canvasWidth / 2;
         ship.y = canvasHeight / 2;
         ship.velX = 0;
-        ship.velY = 0;
-        for (let i = 0; i < 8; i++) {
+        ship.velY = 0; */
+        // set here for increment level
+        game.exp += 1;
+        for (let i = 0; i < game.exp + 8; i++) {
             let asteroid = new Asteroid();
-            asteroid.speed += .5;
+            
+            asteroid.speed = game.exp;
             game.asteroids.push(asteroid);
         }
     }
@@ -332,11 +336,11 @@ function Render() {
                 if (CircleCollision(game.bullets[m].x, game.bullets[m].y, 3, game.asteroids[l].x, game.asteroids[l].y, game.asteroids[l].collisionRadius)) {
                     // Check if asteroid can be broken into smaller pieces
                     if (game.asteroids[l].level === 1) {
-                        game.asteroids.push(new Asteroid(game.asteroids[l].x - 5, game.asteroids[l].y - 5, 25, 2, 22));
-                        game.asteroids.push(new Asteroid(game.asteroids[l].x + 5, game.asteroids[l].y + 5, 25, 2, 22));
+                        game.asteroids.push(new Asteroid(game.asteroids[l].x - 5, game.asteroids[l].y - 5, 25, 2, 22, game.exp - 1));
+                        game.asteroids.push(new Asteroid(game.asteroids[l].x + 5, game.asteroids[l].y + 5, 25, 2, 22, game.exp - 1));
                     } else if (game.asteroids[l].level === 2) {
-                        game.asteroids.push(new Asteroid(game.asteroids[l].x - 5, game.asteroids[l].y - 5, 15, 3, 12));
-                        game.asteroids.push(new Asteroid(game.asteroids[l].x + 5, game.asteroids[l].y + 5, 15, 3, 12));
+                        game.asteroids.push(new Asteroid(game.asteroids[l].x - 5, game.asteroids[l].y - 5, 15, 3, 12, game.exp - 0.5));
+                        game.asteroids.push(new Asteroid(game.asteroids[l].x + 5, game.asteroids[l].y + 5, 15, 3, 12, game.exp - 0.5));
                     }
                     game.asteroids.splice(l, 1);
                     game.bullets.splice(m, 1);
@@ -374,7 +378,8 @@ function Render() {
     highScore = Math.max(game.score, highScore);
     localStorage.setItem(localStorageName, highScore);
     ctx.font = '21px Arial';
-    ctx.fillText("HIGH SCORE : " + highScore.toString(), 20, 70);
+    ctx.fillText("high score : " + highScore.toString(), 20, 70);
+    ctx.fillText("level : " + game.exp.toString(), 20, 105);
 
     /* console.log('i am making a render') */
     id = requestAnimationFrame(Render);
