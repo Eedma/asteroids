@@ -1,11 +1,12 @@
 {
   "name": "asteroids",
-  "version": "1.0.0",
-  "description": "asteroids v1.0 -  game in vanilla javascript",
-  "main": "game.js",
+  "version": "0.1.0",
+  "description": "asteroids v1.0",
+  "main": "index.js",
   "scripts": {
     "watch": "webpack --watch",
-    "build": "babel src -d public"
+    "start": "webpack --watch & webpack-dev-server --open-page 'webpack-dev-server'",
+    "build": "webpack --config webpack.config.js"
   },
   "repository": {
     "type": "git",
@@ -19,7 +20,11 @@
   },
   "homepage": "https://github.com/Eedma/asteroids#readme",
   "devDependencies": {
-    "babel-cli": "^6.26.0",
-    "babel-preset-env": "^1.7.0"
+    "babel-core": "^6.26.0",
+    "babel-loader": "^7.1.4",
+    "babel-preset-env": "^1.6.1",
+    "webpack": "^4.17.1",
+    "webpack-cli": "^3.1.0",
+    "webpack-dev-server": "^3.10.3"
   }
 }
