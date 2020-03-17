@@ -275,27 +275,8 @@ function Render() {
 
     // Display score
     ctx.fillStyle = 'white';
-    ctx.font = '21px Arial';
-    ctx.fillText("SCORE : " + game.score.toString(), 20, 35);
-
-    // If no lives signal game over
-    if (game.lives <= 0) {
-        // If Game over remove event listeners to stop getting keyboard input
-        document.body.removeEventListener("keydown", HandleKeyDown);
-        document.body.removeEventListener("keyup", HandleKeyUp);
-
-        ship.visible = false;
-        ctx.fillStyle = 'white';
-        ctx.font = '50px Arial';
-        ctx.fillText("GAME OVER", canvasWidth / 2 - 150, canvasHeight / 2);
-        ctx.fillText("press spacebar to play again", canvasWidth / 2 - 300, canvasHeight / 1.5);
-
-        if (game.lives <= 0) {
-            return cancelAnimationFrame(id)
-        }
-
-
-    }
+    ctx.font = '21px monospace';
+    ctx.fillText("score : " + game.score.toString(), 20, 35);
 
     if (game.asteroids.length === 0) {
         /* 
@@ -377,11 +358,38 @@ function Render() {
     // Updates the high score using local storage
     highScore = Math.max(game.score, highScore);
     localStorage.setItem(localStorageName, highScore);
-    ctx.font = '21px Arial';
+    ctx.font = '21px monospace';
     ctx.fillText("high score : " + highScore.toString(), 20, 70);
     ctx.fillText("level : " + game.exp.toString(), 20, 105);
 
     /* console.log('i am making a render') */
     id = requestAnimationFrame(Render);
 
+    // If no lives signal game over
+    if (game.lives <= 0) {
+        
+        handleGameOver()
+    }
+}
+
+let handleGameOver = () => {
+    // If Game over remove event listeners to stop getting keyboard input
+    document.body.removeEventListener("keydown", HandleKeyDown);
+    document.body.removeEventListener("keyup", HandleKeyUp);
+
+    ship.visible = false;
+    console.log(ship)
+    ctx.fillStyle = 'white';
+    ctx.font = '50px monospace';
+    
+    ctx.textAlign = "center"
+    ctx.fillText("GAME OVER", canvas.width / 2, canvasHeight / 2);
+
+    ctx.textAlign = "center"
+    ctx.fillText("press spacebar to play again", canvas.width / 2, canvasHeight / 1.5);
+    
+
+    if (game.lives <= 0) {
+        return cancelAnimationFrame(id)
+    }
 }
