@@ -1,0 +1,25 @@
+{
+  "name": "asteroids",
+  "version": "1.0.0",
+  "description": "asteroids v1.0 -  game in vanilla javascript",
+  "main": "game.js",
+  "scripts": {
+    "watch": "webpack --watch",
+    "build": "babel src -d public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Eedma/asteroids.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Eedma/asteroids/issues"
+  },
+  "homepage": "https://github.com/Eedma/asteroids#readme",
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-preset-env": "^1.7.0"
+  }
+}

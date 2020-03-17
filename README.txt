@@ -1,9 +1,10 @@
 asteroids v1.0 -  game in vanilla javascript
 
-see live @ asteroids.pieinthesky.space
+see live @ https://asteroids.pieinthesky.space
 It might work!
 
 TODO: 
+    - ES6 support
     - better level system
     - maybe a better spaceship?!
     - store in a db the results would be great
