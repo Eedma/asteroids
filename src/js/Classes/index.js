@@ -96,7 +96,7 @@ export class Bullet {
         this.angle = ship.angle;
         this.height = 4;
         this.width = 4;
-        this.speed = 5;
+        this.speed = 7;
         this.velX = 0;
         this.velY = 0;
     }
