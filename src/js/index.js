@@ -1,4 +1,5 @@
 import {Game, Ship, Bullet, Asteroid} from './Classes'
+import api from './utils/api'
 
 let canvas;
 let ctx;
@@ -250,9 +251,35 @@ let handleGameOver = () => {
 
     ctx.textAlign = "center"
     ctx.fillText("press spacebar to play again", canvas.width / 2, canvasHeight / 1.5); */
-    
+    saveData()
 
     if (game.lives <= 0) {
         return cancelAnimationFrame(id)
     }
+}
+
+let saveData = () =>{
+
+    const gameData = {
+        userName: 'gianni',
+        completed: 234,
+      }
+
+      // Make API request to create new todo
+    api.create(gameData).then((response) => {
+        console.log(response)
+        // remove temporaryValue from state and persist API response
+        /* const persistedState = removeOptimisticTodo(todos).concat(response) */
+        // Set persisted value to state
+        /* this.setState({
+          todos: persistedState
+        }) */
+      }).catch((e) => {
+        console.log('An API error occurred', e)
+        /* const revertedState = removeOptimisticTodo(todos)
+        // Reset to original state
+        this.setState({
+          todos: revertedState
+        }) */
+      })
 }
