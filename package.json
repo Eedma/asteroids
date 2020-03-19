@@ -6,6 +6,7 @@
   "scripts": {
     "watch": "webpack --watch",
     "start": "webpack --watch & webpack-dev-server --open-page ''",
+    "prebuild": "echo 'setup faunaDB' && npm run bootstrap",
     "build": "webpack --config webpack.config.js",
     "bootstrap": "node ./scripts/bootstrap-fauna-database.js"
   },
@@ -24,6 +25,7 @@
     "babel-core": "^6.26.0",
     "babel-loader": "^7.1.4",
     "babel-preset-env": "^1.6.1",
+    "netlify-cli": "^2.19.0",
     "netlify-lambda": "^1.6.3",
     "npm-run-all": "^4.1.5",
     "webpack": "^4.17.1",
