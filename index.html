@@ -6,12 +6,37 @@
     <title>asteroids game</title>
 
     <link rel="stylesheet" type="text/css" href="./stylesheet.css">
+    <link rel="stylesheet" href="./node_modules/nes.css/css/nes.min.css">
     
 </head>
 <body>
     <div id="container">
+        <div id="stats">
+            <div id="score"></div>
+            <div id="highscore"></div>
+            <div id="exp"></div>
+        </div>
         <canvas id="canvas"></canvas>
     </div>
+
+      <section>
+        <dialog class="nes-dialog is-rounded is-dark" id="dialog-rounded">
+          <form method="dialog">
+            <div class="nes-field">
+                <p class="nes-text is-error">game over</p>
+                <p id="final-score"></p>
+                <label for="name_field">Add your name</label>
+                <input type="text" id="name_field" class="nes-input">
+            </div>
+              
+            <menu class="dialog-menu">
+              <button class="nes-btn">Cancel</button>
+              <button class="nes-btn is-primary">Confirm</button>
+            </menu>
+          </form>
+        </dialog>
+      </section>
+
 
     <script src="./public/js/bundle.js"></script>
 </body>

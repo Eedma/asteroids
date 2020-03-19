@@ -126,9 +126,11 @@ function Render() {
     ctx.clearRect(0, 0, canvasWidth, canvasHeight);
 
     // Display score
-    ctx.fillStyle = 'white';
+    /* ctx.fillStyle = 'white';
     ctx.font = '21px monospace';
-    ctx.fillText("score : " + game.score.toString(), 20, 35);
+    ctx.fillText("score : " + game.score.toString(), 20, 35); */
+    document.getElementById('score').innerHTML = ''
+    document.getElementById('score').innerHTML = 'score: ' + game.score
 
     if (game.asteroids.length === 0) {
         /* 
@@ -210,9 +212,15 @@ function Render() {
     // Updates the high score using local storage
     highScore = Math.max(game.score, highScore);
     localStorage.setItem(localStorageName, highScore);
-    ctx.font = '21px monospace';
-    ctx.fillText("high score : " + highScore.toString(), 20, 70);
-    ctx.fillText("level : " + game.exp.toString(), 20, 105);
+    
+    // ctx.font = '21px monospace';
+    document.getElementById('highscore').innerHTML = ''
+    document.getElementById('highscore').innerHTML = 'highscore: ' + highScore
+    document.getElementById('exp').innerHTML = ''
+    document.getElementById('exp').innerHTML = 'level: ' + game.exp
+    /* ctx.fillText("high score : " + highScore.toString(), 20, 70);
+    ctx.fillText("level : " + game.exp.toString(), 20, 105); */
+
 
     /* console.log('i am making a render') */
     id = requestAnimationFrame(Render);
@@ -230,15 +238,18 @@ let handleGameOver = () => {
     document.body.removeEventListener("keyup", HandleKeyUp);
 
     ship.visible = false;
-    console.log(ship)
-    ctx.fillStyle = 'white';
+    document.getElementById('dialog-rounded').showModal();
+    /* document.getElementById('dialog-rounded').style.display = "block"; */
+    document.getElementById('final-score').innerHTML = 'Your score is ' + game.score
+
+    /* ctx.fillStyle = 'white';
     ctx.font = '50px monospace';
     
     ctx.textAlign = "center"
     ctx.fillText("GAME OVER", canvas.width / 2, canvasHeight / 2);
 
     ctx.textAlign = "center"
-    ctx.fillText("press spacebar to play again", canvas.width / 2, canvasHeight / 1.5);
+    ctx.fillText("press spacebar to play again", canvas.width / 2, canvasHeight / 1.5); */
     
 
     if (game.lives <= 0) {
