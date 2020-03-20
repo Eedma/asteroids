@@ -14,6 +14,9 @@ let all_scores;
 
 document.addEventListener('DOMContentLoaded', SetupCanvas);
 
+document.getElementById('play-again').addEventListener('click',function(){
+            SetupCanvas()
+})
 
 document.addEventListener("keydown", function (e) {
     if (game.lives <= 0) {
@@ -23,6 +26,7 @@ document.addEventListener("keydown", function (e) {
     }
 
 })
+
 
 
 function SetupCanvas() {
@@ -298,7 +302,7 @@ let readData = () => {
           document.getElementById('scores-list').innerHTML = `
             <tr>
                 <td>${e.data.userName}</td>
-                <td>${e.data.compleated}</td>
+                <td>${e.data.score}</td>
             </tr>
           `
       })
