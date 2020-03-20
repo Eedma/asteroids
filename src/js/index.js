@@ -273,7 +273,7 @@ let saveData = () =>{
         console.log('An API error occurred', e)
       }).then(readData())
 
-      document.getElementById('save-data').style.display = "block";
+      document.getElementById('save-score').style.display = "none";
       document.getElementById('read-score').style.display = "block";
       
 }
@@ -294,7 +294,7 @@ let readData = () => {
       console.log(all_scores)
 
       all_scores.map( e => {
-          document.getElementById('scores-list').innerHTML += `
+          document.getElementById('scores-list').innerHTML = `
             <tr>
                 <td>${e.data.userName}</td>
                 <td>${e.data.score}</td>
