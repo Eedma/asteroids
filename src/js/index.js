@@ -1,4 +1,9 @@
-import {Game, Ship, Bullet, Asteroid} from './Classes'
+import {
+    Game,
+    Ship,
+    Bullet,
+    Asteroid
+} from './elements'
 import api from './utils/api'
 
 let canvas;
@@ -12,16 +17,19 @@ let highScore;
 let localStorageName = "HighScore";
 let all_scores;
 
-document.addEventListener('DOMContentLoaded', SetupCanvas);
+document.addEventListener('DOMContentLoaded', ()=>{
+    document.getElementById('start').style.display = "block"
+});
 
-document.getElementById('play-again').addEventListener('click',function(){
-            SetupCanvas()
-            document.getElementById('read-score').style.display = "none"
+document.getElementById('play').addEventListener('click', ()=>{
+    SetupCanvas()
+    document.getElementById('start').style.display = "none"
 })
 
-
-
-
+document.getElementById('play-again').addEventListener('click', function () {
+    SetupCanvas()
+    document.getElementById('read-score').style.display = "none"
+})
 
 function SetupCanvas() {
     game = new Game()
@@ -52,19 +60,18 @@ function SetupCanvas() {
     Render();
 }
 
-
 // Move event handling functions so that we can turn off
 // event handling if game over is reached
 function HandleKeyDown(e) {
     game.keys[e.keyCode] = true;
 }
+
 function HandleKeyUp(e) {
     game.keys[e.keyCode] = false;
     if (e.keyCode === 32) {
         game.bullets.push(new Bullet(ship));
     }
 }
-
 
 function CircleCollision(p1x, p1y, r1, p2x, p2y, r2) {
     let radiusSum;
@@ -84,30 +91,11 @@ function CircleCollision(p1x, p1y, r1, p2x, p2y, r2) {
 
 // Handles drawing life ships on screen
 function DrawLifeShips() {
-    let startX = 1350;
-    let startY = 10;
-    let points = [
-        [9, 9],
-        [-9, 9]
-    ];
-    ctx.strokeStyle = 'white'; // Stroke color of ships
-    // Cycle through all live ships remaining
-    for (let i = 0; i < game.lives; i++) {
-        // Start drawing ship
-        ctx.beginPath();
-        // Move to origin point
-        ctx.moveTo(startX, startY);
-        // Cycle through all other points
-        for (let j = 0; j < points.length; j++) {
-            ctx.lineTo(startX + points[j][0],
-                startY + points[j][1]);
-        }
-        // Draw from last point to 1st origin point
-        ctx.closePath();
-        // Stroke the ship shape white
-        ctx.stroke();
-        // Move next shape 30 pixels to the left
-        startX -= 30;
+
+    document.getElementById('remaining-lifes').innerHTML = ''
+
+    for (let j = 0; j < game.lives; j++) {
+        document.getElementById('remaining-lifes').innerHTML += ` <i class="nes-icon is-medium heart" id="${j}"></i>`
     }
 }
 
@@ -126,10 +114,7 @@ function Render() {
 
     ctx.clearRect(0, 0, canvasWidth, canvasHeight);
 
-    // Display score
-    /* ctx.fillStyle = 'white';
-    ctx.font = '21px monospace';
-    ctx.fillText("score : " + game.score.toString(), 20, 35); */
+
     document.getElementById('score').innerHTML = ''
     document.getElementById('score').innerHTML = 'score: ' + game.score
 
@@ -143,7 +128,7 @@ function Render() {
         game.exp += 1;
         for (let i = 0; i < game.exp + 8; i++) {
             let asteroid = new Asteroid();
-            
+
             asteroid.speed = game.exp;
             game.asteroids.push(asteroid);
         }
@@ -213,7 +198,7 @@ function Render() {
     // Updates the high score using local storage
     highScore = Math.max(game.score, highScore);
     localStorage.setItem(localStorageName, highScore);
-    
+
     // ctx.font = '21px monospace';
     document.getElementById('highscore').innerHTML = ''
     document.getElementById('highscore').innerHTML = 'highscore: ' + highScore
@@ -228,7 +213,7 @@ function Render() {
 
     // If no lives signal game over
     if (game.lives <= 0) {
-        
+        readData()
         handleGameOver()
     }
 }
@@ -243,67 +228,62 @@ let handleGameOver = () => {
     /* document.getElementById('dialog-rounded').style.display = "block"; */
     document.getElementById('final-score').innerHTML = 'Your score is ' + game.score
 
-    /* ctx.fillStyle = 'white';
-    ctx.font = '50px monospace';
-    
-    ctx.textAlign = "center"
-    ctx.fillText("GAME OVER", canvas.width / 2, canvasHeight / 2);
-
-    ctx.textAlign = "center"
-    ctx.fillText("press spacebar to play again", canvas.width / 2, canvasHeight / 1.5); */
-    document.getElementById('save-data').addEventListener('click',saveData)
+    document.getElementById('save-data').addEventListener('click', saveData)
 
     if (game.lives <= 0) {
         return cancelAnimationFrame(id)
     }
 }
 
-let saveData = () =>{
+let saveData = () => {
 
     let userName = document.getElementById('name_field').value
     let score = game.score
 
-    const gameData = { userName, score }
+    const gameData = {
+        userName,
+        score
+    }
     console.log('this is game data', gameData)
 
-      // Make API request to create new todo
+    // Make API request to create new todo
     api.create(gameData).then((response) => {
         console.log(response)
-      }).catch((e) => {
+    }).catch((e) => {
         console.log('An API error occurred', e)
-      }).then(readData())
+    })
 
-      document.getElementById('save-score').style.display = "none";
-      document.getElementById('read-score').style.display = "block";
-      
+    document.getElementById('save-score').style.display = "none";
+    document.getElementById('read-score').style.display = "block";
+
 }
 
 let readData = () => {
 
     document.getElementById('scores-list').innerHTML = ''
-    
+
     api.readAll().then((todos) => {
-      if (todos.message === 'unauthorized') {
-        if (isLocalHost()) {
-          alert('FaunaDB key is not unauthorized. Make sure you set it in terminal session where you ran `npm start`. Visit http://bit.ly/set-fauna-key for more info')
-        } else {
-          alert('FaunaDB key is not unauthorized. Verify the key `FAUNADB_SERVER_SECRET` set in Netlify enviroment variables is correct')
+        if (todos.message === 'unauthorized') {
+            if (isLocalHost()) {
+                alert('FaunaDB key is not unauthorized. Make sure you set it in terminal session where you ran `npm start`. Visit http://bit.ly/set-fauna-key for more info')
+            } else {
+                alert('FaunaDB key is not unauthorized. Verify the key `FAUNADB_SERVER_SECRET` set in Netlify enviroment variables is correct')
+            }
+            return false
         }
-        return false
-      }
 
-      console.log('all todos', todos)
-      all_scores = todos
-      console.log(all_scores)
+        console.log('all todos', todos)
+        all_scores = todos
+        console.log(all_scores)
 
-      all_scores.map( e => {
-          document.getElementById('scores-list').innerHTML += `
+        all_scores.sort((a, b) => b.data.score - a.data.score).map(e => {
+            document.getElementById('scores-list').innerHTML += `
             <tr>
                 <td>${e.data.userName}</td>
                 <td>${e.data.score}</td>
             </tr>
           `
-      })
+        })
     })
-  
+
 }

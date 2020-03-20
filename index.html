@@ -10,17 +10,70 @@
     
 </head>
 <body>
+
+  <div class="modal" id="start">
+
+    <div class="nes-container is-rounded is-dark">
+      <p>Move with W, shift with A D, shoot with SPACEBAR</p>
+      <menu class="dialog-menu">
+        <button class="nes-btn is-warning" id="play">play again</button>
+      </menu>
+    </div>
+    
+  </div>
+
     <div id="container">
         <div id="stats">
             <div id="score"></div>
             <div id="highscore"></div>
             <div id="exp"></div>
+            <div id="remaining-lifes" class="icon-list"></div>
         </div>
         <canvas id="canvas"></canvas>
     </div>
 
-      <section>
-        <dialog class="nes-dialog is-rounded is-dark" id="save-score">
+    <!-- The Modal -->
+<div id="save-score" class="modal">
+
+  <!-- Modal content -->
+  <div class="modal-content">
+    <form>
+      <div class="nes-field">
+          <p class="nes-text is-error">game over</p>
+          <p id="final-score"></p>
+          <label for="name_field">Add your name</label>
+          <input type="text" id="name_field" class="nes-input">
+      </div>
+        
+      <menu class="dialog-menu">
+        <button id="save-data" class="nes-btn is-primary">Confirm</button>
+      </menu>
+    </form>
+  </div>
+</div>
+
+<div class="modal" id="read-score">
+
+  <div class="modal-content">
+    <div class="nes-table-responsive">
+      <table class="nes-table is-bordered is-centered is-dark">
+        <thead>
+          <tr>
+            <th>username</th>
+            <th>score</th>
+          </tr>
+        </thead>
+        <tbody id="scores-list">
+        </tbody>
+      </table>
+    </div>
+    <menu class="dialog-menu">
+      <button class="nes-btn is-warning" id="play-again">play again</button>
+    </menu>
+  </div>
+  
+</div>
+        <!-- <div class="nes-dialog is-rounded is-dark" id="save-score">
           <form method="dialog">
             <div class="nes-field">
                 <p class="nes-text is-error">game over</p>
@@ -33,28 +86,9 @@
               <button id="save-data" class="nes-btn is-primary">Confirm</button>
             </menu>
           </form>
-        </dialog>
+        </div>
 
-        <dialog class="nes-dialog is-rounded is-dark" id="read-score">
-
-          <div class="nes-table-responsive">
-            <table class="nes-table is-bordered is-centered is-dark">
-              <thead>
-                <tr>
-                  <th>username</th>
-                  <th>score</th>
-                </tr>
-              </thead>
-              <tbody id="scores-list">
-              </tbody>
-            </table>
-          </div>
-          <menu class="dialog-menu">
-            <button class="nes-btn is-warning" id="play-again">play again</button>
-          </menu>
-        </dialog>
-      </section>
-
+         -->
 
     <script src="./public/js/bundle.js"></script>
 </body>
