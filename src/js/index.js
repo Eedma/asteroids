@@ -273,6 +273,7 @@ let saveData = () =>{
         console.log('An API error occurred', e)
       }).then(readData())
 
+      document.getElementById('save-data').style.display = "block";
       document.getElementById('read-score').style.display = "block";
       
 }
