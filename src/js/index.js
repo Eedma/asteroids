@@ -10,7 +10,7 @@ let game
 let ship;
 let highScore;
 let localStorageName = "HighScore";
-let all_scores = [];
+let all_scores;
 
 document.addEventListener('DOMContentLoaded', SetupCanvas);
 
@@ -273,10 +273,10 @@ let saveData = () =>{
         console.log(response)
       }).catch((e) => {
         console.log('An API error occurred', e)
-      })
+      }).then(readData())
 
       document.getElementById('read-score').showModal();
-      readData()
+      
 }
 
 let readData = () => {
@@ -291,8 +291,17 @@ let readData = () => {
       }
 
       console.log('all todos', todos)
-      all_scores[todos]
+      all_scores = todos
       console.log(all_scores)
+
+      all_scores.map( e => {
+          document.getElementById('scores-list').innerHTML = `
+            <tr>
+                <td>${e.data.userName}</td>
+                <td>${e.data.compleated}</td>
+            </tr>
+          `
+      })
     })
   
 }
