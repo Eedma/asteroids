@@ -20,7 +20,7 @@
     </div>
 
       <section>
-        <dialog class="nes-dialog is-rounded is-dark" id="dialog-rounded">
+        <dialog class="nes-dialog is-rounded is-dark" id="save-score">
           <form method="dialog">
             <div class="nes-field">
                 <p class="nes-text is-error">game over</p>
@@ -31,9 +31,39 @@
               
             <menu class="dialog-menu">
               <button class="nes-btn">Cancel</button>
-              <button class="nes-btn is-primary" onclick="saveData()">Confirm</button>
+              <button id="save-data" class="nes-btn is-primary">Confirm</button>
             </menu>
           </form>
+        </dialog>
+
+        <dialog class="nes-dialog is-rounded is-dark" id="read-score">
+          <div class="lists">
+            <ol class="nes-list is-disc" >
+              <li></li>
+            </ol>
+          </div>
+
+          <div class="nes-table-responsive">
+            <table class="nes-table is-bordered is-centered is-dark">
+              <thead>
+                <tr>
+                  <th>username</th>
+                  <th>score</th>
+                </tr>
+              </thead>
+              <tbody id="scores-list">
+                <tr>
+                  <td>Thou hast had a good morning</td>
+                  <td>Thou hast had a good afternoon</td>
+                  <td>Thou hast had a good evening</td>
+                  <td>Thou hast had a good night</td>
+                </tr>
+
+              </tbody>
+            </table>
+          </div>
+          
+          
         </dialog>
       </section>
 

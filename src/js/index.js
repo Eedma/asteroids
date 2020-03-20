@@ -10,6 +10,7 @@ let game
 let ship;
 let highScore;
 let localStorageName = "HighScore";
+let all_scores = [];
 
 document.addEventListener('DOMContentLoaded', SetupCanvas);
 
@@ -22,6 +23,7 @@ document.addEventListener("keydown", function (e) {
     }
 
 })
+
 
 function SetupCanvas() {
     game = new Game()
@@ -239,7 +241,7 @@ let handleGameOver = () => {
     document.body.removeEventListener("keyup", HandleKeyUp);
 
     ship.visible = false;
-    document.getElementById('dialog-rounded').showModal();
+    document.getElementById('save-score').showModal();
     /* document.getElementById('dialog-rounded').style.display = "block"; */
     document.getElementById('final-score').innerHTML = 'Your score is ' + game.score
 
@@ -251,7 +253,7 @@ let handleGameOver = () => {
 
     ctx.textAlign = "center"
     ctx.fillText("press spacebar to play again", canvas.width / 2, canvasHeight / 1.5); */
-    saveData()
+    document.getElementById('save-data').addEventListener('click',saveData)
 
     if (game.lives <= 0) {
         return cancelAnimationFrame(id)
@@ -260,26 +262,37 @@ let handleGameOver = () => {
 
 let saveData = () =>{
 
-    const gameData = {
-        userName: 'gianni',
-        completed: 234,
-      }
+    let userName = document.getElementById('name_field').value
+    let score = game.score
+
+    const gameData = { userName, score }
+    console.log('this is game data', gameData)
 
       // Make API request to create new todo
     api.create(gameData).then((response) => {
         console.log(response)
-        // remove temporaryValue from state and persist API response
-        /* const persistedState = removeOptimisticTodo(todos).concat(response) */
-        // Set persisted value to state
-        /* this.setState({
-          todos: persistedState
-        }) */
       }).catch((e) => {
         console.log('An API error occurred', e)
-        /* const revertedState = removeOptimisticTodo(todos)
-        // Reset to original state
-        this.setState({
-          todos: revertedState
-        }) */
       })
+
+      document.getElementById('read-score').showModal();
+      readData()
+}
+
+let readData = () => {
+    api.readAll().then((todos) => {
+      if (todos.message === 'unauthorized') {
+        if (isLocalHost()) {
+          alert('FaunaDB key is not unauthorized. Make sure you set it in terminal session where you ran `npm start`. Visit http://bit.ly/set-fauna-key for more info')
+        } else {
+          alert('FaunaDB key is not unauthorized. Verify the key `FAUNADB_SERVER_SECRET` set in Netlify enviroment variables is correct')
+        }
+        return false
+      }
+
+      console.log('all todos', todos)
+      all_scores[todos]
+      console.log(all_scores)
+    })
+  
 }
