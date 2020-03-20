@@ -294,7 +294,7 @@ let readData = () => {
       console.log(all_scores)
 
       all_scores.map( e => {
-          document.getElementById('scores-list').innerHTML = `
+          document.getElementById('scores-list').innerHTML += `
             <tr>
                 <td>${e.data.userName}</td>
                 <td>${e.data.score}</td>
