@@ -16,16 +16,10 @@ document.addEventListener('DOMContentLoaded', SetupCanvas);
 
 document.getElementById('play-again').addEventListener('click',function(){
             SetupCanvas()
+            document.getElementById('read-score').style.display = "none"
 })
 
-document.addEventListener("keydown", function (e) {
-    if (game.lives <= 0) {
-        if (e.keyCode === 32) {
-            SetupCanvas()
-        }
-    }
 
-})
 
 
 
@@ -245,7 +239,7 @@ let handleGameOver = () => {
     document.body.removeEventListener("keyup", HandleKeyUp);
 
     ship.visible = false;
-    document.getElementById('save-score').showModal();
+    document.getElementById('save-score').style.display = "block";
     /* document.getElementById('dialog-rounded').style.display = "block"; */
     document.getElementById('final-score').innerHTML = 'Your score is ' + game.score
 
@@ -279,7 +273,7 @@ let saveData = () =>{
         console.log('An API error occurred', e)
       }).then(readData())
 
-      document.getElementById('read-score').showModal();
+      document.getElementById('read-score').style.display = "block";
       
 }
 
