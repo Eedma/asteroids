@@ -1,6 +1,6 @@
 # sample dev block in the toml
 # note: each of these fields are OPTIONAL and should only be used if you need an override
 [dev]
-  command = "yarn start" # Command to start your dev server
+  command = "npm start" # Command to start your dev server
   port = 3000 # Port that the dev server will be listening on
   functionsPort = 34567 # port for functions server

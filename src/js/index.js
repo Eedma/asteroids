@@ -235,7 +235,12 @@ let handleGameOver = () => {
     }
 }
 
-let saveData = () => {
+let saveData = (e) => {
+
+    e.preventDefault()
+
+    document.getElementById('save-score').style.display = "none";
+    document.getElementById('read-score').style.display = "block";
 
     let userName = document.getElementById('name_field').value
     let score = game.score
@@ -253,8 +258,7 @@ let saveData = () => {
         console.log('An API error occurred', e)
     })
 
-    document.getElementById('save-score').style.display = "none";
-    document.getElementById('read-score').style.display = "block";
+    
 
 }
 
