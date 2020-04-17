@@ -251,23 +251,24 @@ let saveData = (e) => {
     }
     console.log('this is game data', gameData)
 
-    // Make API request to create new todo
+    // Make API request to create new list
     api.create(gameData).then((response) => {
         console.log(response)
     }).catch((e) => {
         console.log('An API error occurred', e)
     })
+}
 
-    
-
+let sortScore = (score) => {
+    return score.sort((a, b) => b.data.score - a.data.score)
 }
 
 let readData = () => {
 
     document.getElementById('scores-list').innerHTML = ''
 
-    api.readAll().then((todos) => {
-        if (todos.message === 'unauthorized') {
+    api.readAll().then((scores) => {
+        if (scores.message === 'unauthorized') {
             if (isLocalHost()) {
                 alert('FaunaDB key is not unauthorized. Make sure you set it in terminal session where you ran `npm start`. Visit http://bit.ly/set-fauna-key for more info')
             } else {
@@ -276,18 +277,23 @@ let readData = () => {
             return false
         }
 
-        console.log('all todos', todos)
-        all_scores = todos
+        all_scores = sortScore(scores)
         console.log(all_scores)
 
-        all_scores.sort((a, b) => b.data.score - a.data.score).map(e => {
-            document.getElementById('scores-list').innerHTML += `
-            <tr>
-                <td>${e.data.userName}</td>
-                <td>${e.data.score}</td>
-            </tr>
-          `
-        })
+        
+        if(game.score > all_scores[all_scores.length -1]){
+            sortScore(all_scores.push(game.score)).map(e => {
+                document.getElementById('scores-list').innerHTML += `
+                <tr>
+                    <td>${e.data.userName}</td>
+                    <td>${e.data.score}</td>
+                </tr>
+              `
+            })
+        }
+
+
+        
     })
 
 }
