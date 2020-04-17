@@ -267,6 +267,17 @@ let readData = () => {
     document.getElementById('scores-list').innerHTML = ''
 
     api.readAll().then((scores) => {
+        all_scores = scores
+
+        all_scores.push(game.score).sort((a, b) => b.data.score - a.data.score).map(e => {
+            document.getElementById('scores-list').innerHTML += `
+                <tr>
+                    <td>${e.data.userName}</td>
+                    <td>${e.data.score}</td>
+                </tr>
+              `
+        })
+
         if (scores.message === 'unauthorized') {
             if (isLocalHost()) {
                 alert('FaunaDB key is not unauthorized. Make sure you set it in terminal session where you ran `npm start`. Visit http://bit.ly/set-fauna-key for more info')
@@ -275,16 +286,9 @@ let readData = () => {
             }
             return false
         }
-        all_scores = scores
-    })
 
-    all_scores.push(game.score).sort((a, b) => b.data.score - a.data.score).map(e => {
-        document.getElementById('scores-list').innerHTML += `
-            <tr>
-                <td>${e.data.userName}</td>
-                <td>${e.data.score}</td>
-            </tr>
-          `
+        console.log(all_scores)
+
     })
 
 }
