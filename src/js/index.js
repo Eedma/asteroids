@@ -3,7 +3,7 @@ import {
     Ship,
     Bullet,
     Asteroid
-} from './elements'
+} from './class'
 import api from './utils/api'
 
 let canvas;
@@ -17,11 +17,11 @@ let highScore;
 let localStorageName = "HighScore";
 let all_scores;
 
-document.addEventListener('DOMContentLoaded', ()=>{
+document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('start').style.display = "block"
 });
 
-document.getElementById('play').addEventListener('click', ()=>{
+document.getElementById('play').addEventListener('click', () => {
     SetupCanvas()
     document.getElementById('start').style.display = "none"
 })
@@ -249,14 +249,17 @@ let saveData = (e) => {
         userName,
         score
     }
-    console.log('this is game data', gameData)
+//    console.log('this is game data', gameData)
 
-    // Make API request to create new list
-    api.create(gameData).then((response) => {
-        console.log(response)
-    }).catch((e) => {
-        console.log('An API error occurred', e)
-    })
+    if (game.score > all_scores[all_scores.length - 1]) {
+        // Make API request to create new list
+        api.create(gameData).then((response) => {
+            console.log(response)
+        }).catch((e) => {
+            alert('An API error occurred', e)
+            // console.log('An API error occurred', e)
+        })
+    }
 }
 
 let sortScore = (score) => {
@@ -276,24 +279,15 @@ let readData = () => {
             }
             return false
         }
-
         all_scores = sortScore(scores)
-        console.log(all_scores)
-
-        
-        if(game.score > all_scores[all_scores.length -1]){
-            sortScore(all_scores.push(game.score)).map(e => {
-                document.getElementById('scores-list').innerHTML += `
+        sortScore(all_scores.push(game.score)).map(e => {
+            document.getElementById('scores-list').innerHTML += `
                 <tr>
                     <td>${e.data.userName}</td>
                     <td>${e.data.score}</td>
                 </tr>
               `
-            })
-        }
-
-
-        
+        })
     })
 
 }
