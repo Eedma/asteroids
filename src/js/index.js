@@ -262,10 +262,6 @@ let saveData = (e) => {
     }
 }
 
-let sortScore = (score) => {
-    return score.sort((a, b) => b.data.score - a.data.score)
-}
-
 let readData = () => {
 
     document.getElementById('scores-list').innerHTML = ''
@@ -279,15 +275,16 @@ let readData = () => {
             }
             return false
         }
-        all_scores = sortScore(scores)
-        sortScore(all_scores.push(game.score)).map(e => {
-            document.getElementById('scores-list').innerHTML += `
-                <tr>
-                    <td>${e.data.userName}</td>
-                    <td>${e.data.score}</td>
-                </tr>
-              `
-        })
+        all_scores = scores
+    })
+
+    all_scores.push(game.score).sort((a, b) => b.data.score - a.data.score).map(e => {
+        document.getElementById('scores-list').innerHTML += `
+            <tr>
+                <td>${e.data.userName}</td>
+                <td>${e.data.score}</td>
+            </tr>
+          `
     })
 
 }
