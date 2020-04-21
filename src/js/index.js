@@ -269,7 +269,9 @@ let readData = () => {
     api.readAll().then((scores) => {
         all_scores = scores
 
-        all_scores.push(game.score).sort((a, b) => b.data.score - a.data.score).map(e => {
+        let total = all_scores.push(game.score)
+        console.log(total)
+        total.sort((a, b) => b.data.score - a.data.score).map(e => {
             document.getElementById('scores-list').innerHTML += `
                 <tr>
                     <td>${e.data.userName}</td>
