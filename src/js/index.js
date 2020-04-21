@@ -219,7 +219,10 @@ function Render() {
 }
 
 let handleGameOver = () => {
-    // If Game over remove event listeners to stop getting keyboard input
+
+    document.getElementById('remaining-lifes').innerHTML = ''
+    cancelAnimationFrame(id)
+    // game over so remove event listeners to stop getting keyboard input
     document.body.removeEventListener("keydown", HandleKeyDown);
     document.body.removeEventListener("keyup", HandleKeyUp);
 
@@ -230,17 +233,18 @@ let handleGameOver = () => {
 
     document.getElementById('save-data').addEventListener('click', saveData)
 
-    if (game.lives <= 0) {
+    /* if (game.lives <= 0) {
         return cancelAnimationFrame(id)
-    }
+    } */
 }
 
 let saveData = (e) => {
-
     e.preventDefault()
 
     document.getElementById('save-score').style.display = "none";
     document.getElementById('read-score').style.display = "block";
+
+    writeScoreList()
 
     let userName = document.getElementById('name_field').value
     let score = game.score
@@ -269,17 +273,6 @@ let readData = () => {
     api.readAll().then((scores) => {
         all_scores = scores
 
-        let total = all_scores.push(game.score)
-        console.log(total)
-        total.sort((a, b) => b.data.score - a.data.score).map(e => {
-            document.getElementById('scores-list').innerHTML += `
-                <tr>
-                    <td>${e.data.userName}</td>
-                    <td>${e.data.score}</td>
-                </tr>
-              `
-        })
-
         if (scores.message === 'unauthorized') {
             if (isLocalHost()) {
                 alert('FaunaDB key is not unauthorized. Make sure you set it in terminal session where you ran `npm start`. Visit http://bit.ly/set-fauna-key for more info')
@@ -293,4 +286,19 @@ let readData = () => {
 
     })
 
+}
+
+let writeScoreList = () =>{
+    let data = []
+    let total = all_scores.push(game.score)
+    total.map(e => data.push(e.data))
+
+        data.sort((a, b) => b.data.score - a.data.score).map(e => {
+            document.getElementById('scores-list').innerHTML += `
+                <tr>
+                    <td>${e.data.userName}</td>
+                    <td>${e.data.score}</td>
+                </tr>
+              `
+        })
 }
