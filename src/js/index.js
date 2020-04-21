@@ -293,11 +293,11 @@ let writeScoreList = () =>{
     let total = all_scores.push(game.score)
     total.map(e => data.push(e.data))
 
-        data.sort((a, b) => b.data.score - a.data.score).map(e => {
+        data.sort((a, b) => b.score - a.score).map(e => {
             document.getElementById('scores-list').innerHTML += `
                 <tr>
-                    <td>${e.data.userName}</td>
-                    <td>${e.data.score}</td>
+                    <td>${e.userName}</td>
+                    <td>${e.score}</td>
                 </tr>
               `
         })
