@@ -291,7 +291,8 @@ let readData = () => {
 let writeScoreList = () =>{
     let data = []
     let total = all_scores.push(game.score)
-    total.map(e => data.push(e.data))
+
+    data.push(total.map(e=>e.data))
 
         data.sort((a, b) => b.score - a.score).map(e => {
             document.getElementById('scores-list').innerHTML += `
