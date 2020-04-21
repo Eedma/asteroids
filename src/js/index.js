@@ -291,10 +291,17 @@ let readData = () => {
 
 let writeScoreList = () =>{
     let data = []
-    data.push(game.score)
+    let userName = document.getElementById('name_field').value
+    let score = game.score
+
+    const gameData = {
+        userName,
+        score
+    }
+
+    data.push(gameData
+        )
     all_scores.forEach(x => data.push(x.data))
-    // data.push(all_scores.map(e => e.data))
-    // all_scores.map(e=> data.push(e.data))
 
         data.sort((a, b) => b.score - a.score).map(e => {
             document.getElementById('scores-list').innerHTML += `
