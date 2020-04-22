@@ -253,7 +253,7 @@ let saveData = (e) => {
         userName,
         score
     }
-//    console.log('this is game data', gameData)
+    //    console.log('this is game data', gameData)
 
     if (game.score > all_scores[all_scores.length - 1]) {
         // Make API request to create new list
@@ -289,7 +289,7 @@ let readData = () => {
 }
 
 
-let writeScoreList = () =>{
+let writeScoreList = () => {
     let data = []
     let userName = document.getElementById('name_field').value
     let score = game.score
@@ -299,16 +299,15 @@ let writeScoreList = () =>{
         score
     }
 
-    data.push(gameData
-        )
+    data.push(gameData)
     all_scores.forEach(x => data.push(x.data))
 
-        data.sort((a, b) => b.score - a.score).map(e => {
-            document.getElementById('scores-list').innerHTML += `
+    data.sort((a, b) => b.score - a.score).map(e => {
+        document.getElementById('scores-list').innerHTML += `
                 <tr>
                     <td>${e.userName}</td>
                     <td>${e.score}</td>
                 </tr>
               `
-        })
+    })
 }
