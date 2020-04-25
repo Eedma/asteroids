@@ -255,8 +255,6 @@ let saveData = (e) => {
     }
     //    console.log('this is game data', gameData)
 
-    console.log('is more than', all_scores, all_scores[all_scores.length - 1].data.score)
-
     if (gameData.score > all_scores[all_scores.length - 1].data.score) {
         /* questa condizione è sbagliata */
         // Make API request to create new list
@@ -287,6 +285,9 @@ let readData = () => {
 
         console.log(all_scores)
 
+    }).catch((e) => {
+        alert('An API error occurred', e)
+        // console.log('An API error occurred', e)
     })
 
 }
