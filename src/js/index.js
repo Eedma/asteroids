@@ -255,9 +255,9 @@ let saveData = (e) => {
     }
     //    console.log('this is game data', gameData)
 
-    console.log('is more than', allscores, all_scores[all_scores.length - 1].data.score)
+    console.log('is more than', all_scores, all_scores[all_scores.length - 1].data.score)
 
-    if (gameData.score >= all_scores[all_scores.length - 1].data.score) {
+    if (gameData.score > all_scores[all_scores.length - 1].data.score) {
         /* questa condizione è sbagliata */
         // Make API request to create new list
         api.create(gameData).then((response) => {
