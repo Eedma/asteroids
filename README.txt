@@ -4,6 +4,7 @@ see live @ https://asteroids.pieinthesky.space
 It might work!
 
 TODO: 
+    - maxlenght on input text absolutely!!!
     - maybe a better spaceship?!
     - absolutly a better UI
     - maybe mobile friendly?!

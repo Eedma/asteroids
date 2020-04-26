@@ -5,10 +5,10 @@
   "main": "index.js",
   "scripts": {
     "watch": "webpack --watch",
-    "start": "webpack --watch & webpack-dev-server --open-page ''",
+    "start": "netlify dev",
     "prebuild": "echo 'setup faunaDB' && npm run bootstrap",
     "build": "webpack --config webpack.config.js",
-    "bootstrap": "node ./scripts/bootstrap-fauna-database.js"
+    "bootstrap": "netlify dev:exec node ./scripts/bootstrap-fauna-database.js"
   },
   "repository": {
     "type": "git",
@@ -38,7 +38,7 @@
   },
   "proxy": {
     "/.netlify/functions": {
-      "target": "http://localhost:8080",
+      "target": "http://localhost:9000",
       "pathRewrite": {
         "^/\\.netlify/functions": ""
       }

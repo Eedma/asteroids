@@ -253,7 +253,9 @@ let saveData = (e) => {
         userName,
         score
     }
-    //    console.log('this is game data', gameData)
+        console.log('this is game data', gameData)
+        console.log('all_scores', all_scores)
+        console.log('and this is my shit', all_scores[all_scores.length - 1].data.score)
 
     if (gameData.score > all_scores[all_scores.length - 1].data.score) {
         /* questa condizione è sbagliata */
