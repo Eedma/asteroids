@@ -255,13 +255,12 @@ let saveData = (e) => {
     }
         
 
-        all_scores.sort((a, b) => b.score - a.score)
-
+        
         console.log('this is game data', gameData)
         console.log('all_scores', all_scores)
         console.log('and this is my shit', all_scores[all_scores.length - 1].data.score)
 
-    if (gameData.score > all_scores[all_scores.length - 1].data.score) {
+    if (gameData.score > all_scores.sort((a, b) => b.data.score - a.data.score)[all_scores.length - 1].data.score) {
         /* questa condizione è sbagliata */
         // Make API request to create new list
         api.create(gameData).then((response) => {
